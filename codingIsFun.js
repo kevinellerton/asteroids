@@ -1,5 +1,22 @@
 // THIS IS YOUR JAVASCRIPT DOCUMENT!
 
+// GENERATE ASTEROIDS IN HTML DOCUMENT
+
+for (var i = 0; i < 100; i++) {
+
+  var asteroid = new Image();
+  asteroid.id = "asteroid" + i.toString();
+  asteroid.src = "asteroid.png";
+  asteroid.style.height = (((Math.random() * 6) + 0)*30);
+  asteroid.style.position = "absolute";
+  asteroid.style.top = (((Math.random() * 6) + 0)*100);
+  asteroid.style.right = -200;
+  var asteroidPosition = asteroid.style.right;
+  var asteroidID = asteroid.id;
+
+  document.body.appendChild(asteroid);
+
+}
 
 // MOVEMENT CONTROLS FOR SHIP
 
@@ -59,8 +76,15 @@ function slowDownY()
     ySpeed = ySpeed + 1;
 }
 
+
+
+var loopCounter = 0;
+var asteroidCounter = 0;
+
 function gameLoop()
 {
+
+  // SPACESHIP MOVEMENT
 
   // new position
   xPosition = xPosition + xSpeed;
@@ -86,65 +110,32 @@ function gameLoop()
   if (leftPressed == 0 && rightPressed == 0)
      slowDownX();
 
+
+     // ASTEROID MOVEMENT
+
+     // count how many times we've been through the gameLoop
+     loopCounter++;
+
+     // every 100 cycles (every 1 second), launch a new asteroid BY GIVING IT A CLASS OF "MOVING"
+     // but only do this 100 times
+     if (loopCounter >= 99 && asteroidCounter <= 99) {
+       document.getElementById("asteroid" + asteroidCounter.toString()).className = "moving";
+       asteroidCounter++;
+       loopCounter = 0;
+     }
+
+     // every cycle, let all asteroids with a class of "MOVING" move 2px
+     var arrayOfMovingAsteroids = document.getElementsByClassName("moving");
+     for (var i=0; i < arrayOfMovingAsteroids.length; i++){
+       if (parseInt(arrayOfMovingAsteroids[i].style.right) < 3000) {
+        arrayOfMovingAsteroids[i].style.right = parseInt(arrayOfMovingAsteroids[i].style.right) + 2 + 'px';
+      } else {
+        arrayOfMovingAsteroids[i].className = "";
+      }
+     }
+
   // loop
   setTimeout("gameLoop()",10);
-}
-
-
-
-
-// GENERATE NEW ASTEROIDS
-
-for (var i = 0; i < 100; i++) {
-
-  var asteroid = new Image();
-  asteroid.id = "asteroid" + i.toString();
-  asteroid.src = "asteroid.png";
-  asteroid.style.height = (((Math.random() * 6) + 0)*30);
-  asteroid.style.position = "absolute";
-  asteroid.style.top = (((Math.random() * 6) + 0)*100);
-  asteroid.style.right = -200;
-  var asteroidPosition = asteroid.style.right;
-  var asteroidID = asteroid.id;
-
-  document.body.appendChild(asteroid);
-
-}
-
-var i = 0;
-function startAsteroidMovement () {
-   setTimeout(function () {
-
-     var currentAsteroid = ("asteroid" + i.toString());
-     var startingPosition = -200;
-     asteroidMovementLoop(currentAsteroid, startingPosition);
-
-      i++;
-      if (i < 100) {
-         startAsteroidMovement();
-      }
-   }, 1000)
-}
-
-startAsteroidMovement();  
-
-
-function asteroidMovementLoop(currentAsteroid, currentPosition)
-{
-
-  if (currentPosition < 3000) {
-    // new position
-    var newAsteroidPosition = currentPosition + 1;
-
-    // actually change on-screen position by adjusting CSS
-    document.getElementById(currentAsteroid).style.right = newAsteroidPosition;
-
-    // loop
-    setTimeout(function(){
-      asteroidMovementLoop(currentAsteroid, newAsteroidPosition)
-    },5);
-  }
-
 }
 
 
