@@ -1,0 +1,24 @@
+body {
+  background-image: url("space.jpg");
+  overflow: hidden;
+}
+
+#ship {
+  position: absolute;
+  height: 30%;
+  top: 100;
+  left: 100;
+}
+
+#asteroidGenerator {
+  position: absolute;
+  top: 100;
+  right: 100;
+}
+
+.asteroid {
+  position: absolute;
+  height: 10%;
+  top: 100;
+  right: 100;
+}
